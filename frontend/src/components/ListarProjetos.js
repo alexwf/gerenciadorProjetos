@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { formatDate } from '../utils/dateUtils';
+import { arredondarPercentual } from '../utils/mathUtils'
 import {
     Box,
     Heading,
@@ -55,8 +56,8 @@ const ListarProjetos = () => {
                         textAlign="center"
                     >
                         <CardHeader>
-                        <CircularProgress value={40} color='teal.500' size='115px'>
-                            <CircularProgressLabel>40%</CircularProgressLabel>
+                        <CircularProgress value={arredondarPercentual(projeto.perc_conclusao)} color='teal.500' size='115px'>
+                            <CircularProgressLabel>{arredondarPercentual(projeto.perc_conclusao)}%</CircularProgressLabel>
                         </CircularProgress>
                         </CardHeader>
                         <CardBody>
