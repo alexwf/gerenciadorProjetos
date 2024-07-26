@@ -9,8 +9,10 @@ import {
     Card,
     CardHeader,
     CardBody,
-    Image
+    CircularProgress,
+    CircularProgressLabel
 } from '@chakra-ui/react';
+import ListarAtividades from './ListarAtividades';
 
 const ListarProjetos = () => {
     const [projetos, setProjetos] = useState([]);
@@ -53,19 +55,18 @@ const ListarProjetos = () => {
                         textAlign="center"
                     >
                         <CardHeader>
-                            <Image
-                                src={`https://picsum.photos/150?random=${projeto.id}`}
-                                alt={`Imagem do Projeto ${projeto.id}`}
-                                borderRadius="md"
-                            />
+                        <CircularProgress value={40} color='teal.500' size='115px'>
+                            <CircularProgressLabel>40%</CircularProgressLabel>
+                        </CircularProgress>
                         </CardHeader>
                         <CardBody>
-                                <Heading size="md">{`${projeto.id} - ${projeto.nome}`}</Heading>
-                                <Text mt={2}>Início: {formatDate(projeto.data_inicio)}</Text>
-                                <Text mt={2}>Fim: {formatDate(projeto.data_fim)}</Text>
-                            </CardBody>
-                    </Card>                
-            ))}
+                            <Heading size="md">{`${projeto.id} - ${projeto.nome}`}</Heading>
+                            <Text mt={2}>Início: {formatDate(projeto.data_inicio)}</Text>
+                            <Text mt={2}>Fim: {formatDate(projeto.data_fim)}</Text>
+                            <ListarAtividades idProjeto={projeto.id}/>
+                        </CardBody>
+                    </Card>
+                ))}
             </SimpleGrid>
         </Box>
     );

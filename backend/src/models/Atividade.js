@@ -8,7 +8,12 @@ const listarAtividades = () => {
   return db('atividade').select('*');
 };
 
+const listarAtividadesPorProjeto = (idProjeto) => {
+  return db('atividade').where('id_projeto', idProjeto);
+}
+
 module.exports = {
   criarAtividade,
-  listarAtividades
+  listarAtividades,
+  listarAtividadesPorProjeto
 };

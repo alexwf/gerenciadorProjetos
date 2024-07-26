@@ -1,0 +1,47 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { formatDate } from '../utils/dateUtils';
+import {
+    Box,
+    Heading,
+    Text
+} from '@chakra-ui/react';
+
+const ListarAtividades = ({ idProjeto }) => {
+    const [atividades, setAtividades] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchAtividades = async () => {
+            try {
+                const response = await axios.get(`http://localhost:3001/api/listarAtividades/${idProjeto}`);
+                setAtividades(response.data);
+                setLoading(false);
+            } catch (err) {
+                setError('Erro ao carregar atividades');
+                setLoading(false);
+            }
+        };
+
+        fetchAtividades();
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
+
+    return (
+        <Box>
+            {atividades.map(atividade => (
+                <Box>
+                    <Heading size="md">{`${atividade.id} - ${atividade.nome}`}</Heading>
+                    <Text mt={2}>Início: {formatDate(atividade.data_inicio)}</Text>
+                    <Text mt={2}>Fim: {formatDate(atividade.data_fim)}</Text>
+                    <Text mt={2}>Finalizada? {atividade.finalizada}</Text>
+                </Box>
+            ))}
+        </Box>
+    );
+};
+
+export default ListarAtividades;

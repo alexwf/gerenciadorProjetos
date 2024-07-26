@@ -26,7 +26,19 @@ const listarAtividades = async (req, res) => {
   }
 };
 
+const listarAtividadesPorProjeto = async (req, res) => {
+  try {
+    const { id_projeto } = req.params;
+    const atividades = await atividadeModel.listarAtividadesPorProjeto(id_projeto);
+    res.status(200).json(atividades);
+  } catch (err) {
+    console.error('Erro ao listar atividades:', err);
+    res.status(500).json({ error: 'Erro ao listar atividades.' });
+  }
+};
+
 module.exports = {
   criarAtividade,
-  listarAtividades
+  listarAtividades,
+  listarAtividadesPorProjeto
 };
