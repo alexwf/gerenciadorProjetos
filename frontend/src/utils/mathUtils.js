@@ -5,6 +5,6 @@
  * @param {number} casasDecimais - O número de casas decimais para arredondar.
  * @returns {number} - O valor percentual arredondado.
  */
-export function arredondarPercentual(percentual, casasDecimais = 2) {
+export function arredondarPercentual(percentual, casasDecimais = 0) {
     return parseFloat(percentual.toFixed(casasDecimais));
 }

@@ -18,8 +18,19 @@ const calcularPorcentagemConclusao = async (projetoId) => {
     return totalAtividades > 0 ? (atividadesConcluidas / totalAtividades) * 100 : 0;
 }
 
+const verificarAtraso = async (projetoId, dataFimProjeto) => {
+    const atividades = await listarAtividadesPorProjeto(projetoId);
+    const maiorDataFimAtividade = atividades.reduce((max, atividade) => {
+      const dataFim = new Date(atividade.data_fim);
+      return dataFim > max ? dataFim : max;
+    }, new Date(0));
+
+    return maiorDataFimAtividade > new Date(dataFimProjeto);
+  }
+
 module.exports = {
     criarProjeto,
     listarProjetos,
-    calcularPorcentagemConclusao
+    calcularPorcentagemConclusao,
+    verificarAtraso
 };

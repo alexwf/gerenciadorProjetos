@@ -40,9 +40,6 @@ const ListarProjetos = () => {
 
     return (
         <Box p={10}>
-            <Heading as="h2" mb={6} textAlign="center">
-                Projetos de Alex
-            </Heading>
             <SimpleGrid columns={[1, 2, 3, 4]} spacing={4}>
                 {projetos.map(projeto => (
                     <Card
@@ -64,7 +61,8 @@ const ListarProjetos = () => {
                             <Heading size="md">{`${projeto.id} - ${projeto.nome}`}</Heading>
                             <Text mt={2}>Início: {formatDate(projeto.data_inicio)}</Text>
                             <Text mt={2}>Fim: {formatDate(projeto.data_fim)}</Text>
-                            <ListarAtividades idProjeto={projeto.id}/>
+                            <Text mt={2}>Em atraso? {projeto.atrasado ? "Sim" : "Não"}</Text>
+                            {/*<ListarAtividades idProjeto={projeto.id}/>*/}
                         </CardBody>
                     </Card>
                 ))}

@@ -1,5 +1,4 @@
 const projetoModel = require('../models/Projeto');
-const { listarAtividadesPorProjeto } = require('../models/Atividade');
 
 const criarProjeto = async (req, res) => {
     const { nome, data_inicio, data_fim } = req.body;
@@ -21,18 +20,20 @@ const listarProjetos = async (req, res) => {
     try {
         const projetos = await projetoModel.listarProjetos();
         const projetosComStatus = await Promise.all(projetos.map(async (projeto) => {
-          const perc_conclusao = await projetoModel.calcularPorcentagemConclusao(projeto.id);
-          return {
-            ...projeto,
-            perc_conclusao
-          };
+            const perc_conclusao = await projetoModel.calcularPorcentagemConclusao(projeto.id);
+            const atrasado = await projetoModel.verificarAtraso(projeto.id, projeto.data_fim);
+            return {
+                ...projeto,
+                perc_conclusao,
+                atrasado
+            };
         }));
-        
+
         res.status(200).json(projetosComStatus);
-      } catch (error) {
+    } catch (error) {
         console.error('Erro ao listar projetos:', error);
         res.status(500).json({ message: 'Erro ao listar projetos' });
-      }
+    }
 };
 
 const calcularPorcentagemConclusao = async (req, res) => {
@@ -40,12 +41,11 @@ const calcularPorcentagemConclusao = async (req, res) => {
         const { id_projeto } = req.params;
         const conclusao = await projetoModel.calcularPorcentagemConclusao(id_projeto);
         res.status(200).json(conclusao);
-      } catch (err) {
+    } catch (err) {
         console.error('Erro ao calcular conclusao:', err);
         res.status(500).json({ error: 'Erro ao calcular conclusao.' });
-      }
+    }
 }
- 
 
 module.exports = {
     criarProjeto,
