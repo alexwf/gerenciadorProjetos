@@ -53,7 +53,7 @@ const ListarProjetos = () => {
                         textAlign="center"
                     >
                         <CardHeader>
-                        <CircularProgress value={arredondarPercentual(projeto.perc_conclusao)} color='teal.500' size='115px'>
+                        <CircularProgress value={arredondarPercentual(projeto.perc_conclusao)} color='teal' size='115px'>
                             <CircularProgressLabel>{arredondarPercentual(projeto.perc_conclusao)}%</CircularProgressLabel>
                         </CircularProgress>
                         </CardHeader>
@@ -61,7 +61,7 @@ const ListarProjetos = () => {
                             <Heading size="md">{`${projeto.id} - ${projeto.nome}`}</Heading>
                             <Text mt={2}>Início: {formatDate(projeto.data_inicio)}</Text>
                             <Text mt={2}>Fim: {formatDate(projeto.data_fim)}</Text>
-                            <Text mt={2}>Em atraso? {projeto.atrasado ? "Sim" : "Não"}</Text>
+                            {projeto.atrasado ? <Text color="tomato" mt={2}>EM ATRASO</Text> : <Text color="teal" mt={2}>NO PRAZO</Text>}
                             {/*<ListarAtividades idProjeto={projeto.id}/>*/}
                         </CardBody>
                     </Card>
