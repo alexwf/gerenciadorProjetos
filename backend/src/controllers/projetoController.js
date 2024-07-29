@@ -3,12 +3,14 @@ const projetoModel = require('../models/Projeto');
 const criarProjeto = async (req, res) => {
     const { nome, data_inicio, data_fim } = req.body;
 
-    if (!nome || !data_inicio || !data_fim) {
+    const nomeTrimmed = nome.trim();
+
+    if (!nomeTrimmed || !data_inicio || !data_fim) {
         return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
     }
 
     try {
-        const [id] = await projetoModel.criarProjeto(nome, data_inicio, data_fim);
+        const [id] = await projetoModel.criarProjeto(nomeTrimmed, data_inicio, data_fim);
         res.status(201).json({ message: 'Projeto criado com sucesso!', id });
     } catch (err) {
         console.error('Erro ao inserir projeto:', err);

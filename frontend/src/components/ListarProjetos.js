@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useImperativeHandle, forwardRef, useState } from 'react';
 import { formatDate } from '../utils/dateUtils';
 import { arredondarPercentual } from '../utils/mathUtils'
 import {
@@ -21,32 +20,23 @@ import {
     ModalBody,
     ModalCloseButton,
     useDisclosure,
-    Button,
-    Link
+    Button
 } from '@chakra-ui/react';
 import ListarAtividades from './ListarAtividades';
+import useProjetos from '../hooks/useProjetos';
 
-const ListarProjetos = () => {
-    const [projetos, setProjetos] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const ListarProjetos = forwardRef((props, ref) => {
+    const { projetos, loading, error, fetchProjetos } = useProjetos();
     const [selectedProjeto, setSelectedProjeto] = useState(null);
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    useEffect(() => {
-        const fetchProjetos = async () => {
-            try {
-                const response = await axios.get('http://localhost:3001/api/listarProjetos');
-                setProjetos(response.data);
-                setLoading(false);
-            } catch (err) {
-                setError('Erro ao carregar projetos');
-                setLoading(false);
-            }
-        };
+    useImperativeHandle(ref, () => ({
+        fetchProjetos
+    }));
 
+    useEffect(() => {        
         fetchProjetos();
-    }, []);
+    }, [fetchProjetos]);
 
     const handleCardClick = (projeto) => {
         setSelectedProjeto(projeto);
@@ -58,13 +48,8 @@ const ListarProjetos = () => {
 
     return (
         <Box mb={10}>
-            <SimpleGrid columns={[1, 2, 3, 4]} spacing={4}>
+            <SimpleGrid columns={[1, 2, 3, 4, 5]} spacing={4}>
                 {projetos.map(projeto => (
-                    <Link
-                        _hover={{
-                            textDecoration: 'none'
-                        }}
-                    >
                         <Card
                             key={projeto.id}
                             borderRadius="md"
@@ -79,6 +64,7 @@ const ListarProjetos = () => {
                             border="2px solid transparent"
                             _hover={{
                                 border: '2px solid teal',
+                                cursor: 'pointer'
                             }}
                         >
                             <CardHeader>
@@ -93,7 +79,6 @@ const ListarProjetos = () => {
                                 {projeto.atrasado ? <Text color="tomato" mt={2}>EM ATRASO</Text> : <Text color="teal" mt={2}>NO PRAZO</Text>}
                             </CardBody>
                         </Card>
-                    </Link>
                 ))}
             </SimpleGrid>
             {selectedProjeto && (
@@ -111,7 +96,7 @@ const ListarProjetos = () => {
                         </ModalBody>
 
                         <ModalFooter>
-                            <Button colorScheme='blue' mr={3} onClick={onClose}>
+                            <Button colorScheme='teal' mr={3} onClick={onClose}>
                                 Fechar
                             </Button>
                             <Button variant='ghost'>Nova atividade</Button>
@@ -121,6 +106,6 @@ const ListarProjetos = () => {
             )}
         </Box>
     );
-};
+});
 
 export default ListarProjetos;

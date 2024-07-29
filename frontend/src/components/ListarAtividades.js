@@ -33,7 +33,7 @@ const ListarAtividades = ({ idProjeto }) => {
     return (
         <Box>
             {atividades.map(atividade => (
-                <Box>
+                <Box key={atividade.id}>
                     <Heading size="sm" mt={4}>{`${atividade.id} - ${atividade.nome}`}</Heading>
                     <Text mt={1}>Início: {formatDate(atividade.data_inicio)} - Fim: {formatDate(atividade.data_fim)}</Text>
                     <Text mt={1}>{atividade.finalizada ? "FINALIZADA" : "EM ANDAMENTO"}</Text>
