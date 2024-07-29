@@ -1,31 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import { formatDate } from '../utils/dateUtils';
 import {
     Box,
     Heading,
     Text
 } from '@chakra-ui/react';
+import useAtividades from '../hooks/useAtividades';
 
 const ListarAtividades = ({ idProjeto }) => {
-    const [atividades, setAtividades] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const { atividades, loading, error, fetchAtividades } = useAtividades(idProjeto);
 
     useEffect(() => {
-        const fetchAtividades = async () => {
-            try {
-                const response = await axios.get(`http://localhost:3001/api/listarAtividades/${idProjeto}`);
-                setAtividades(response.data);
-                setLoading(false);
-            } catch (err) {
-                setError('Erro ao carregar atividades');
-                setLoading(false);
-            }
-        };
-
         fetchAtividades();
-    }, []);
+    }, [fetchAtividades]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;

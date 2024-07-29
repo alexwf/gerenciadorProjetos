@@ -4,14 +4,36 @@ const api = axios.create({
     baseURL: 'http://localhost:3001/api',
 });
 
+const handleApiError = (error) => {
+    console.error('API error:', error);
+    throw error.response ? error.response.data : new Error('Erro desconhecido');
+};
+
 export const fetchProjetos = async () => {
-    const response = await api.get('/listarProjetos');
-    return response.data;
+    try {
+        const response = await api.get('/listarProjetos');
+        return response.data;
+    } catch (error) {
+        handleApiError(error);
+    }
 };
 
 export const criarProjeto = async (projeto) => {
-    const response = await api.post('/criarProjeto', projeto);
-    return response.data;
+    try {
+        const response = await api.post('/criarProjeto', projeto);
+        return response.data;
+    } catch (error) {
+        handleApiError(error);
+    }
+};
+
+export const fetchAtividades = async (idProjeto) => {
+    try {
+        const response = await api.get(`/listarAtividades/${idProjeto}`);
+        return response.data;
+    } catch (error) {
+        handleApiError(error);
+    }
 };
 
 export default api;
