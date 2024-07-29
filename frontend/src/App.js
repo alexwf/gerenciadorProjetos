@@ -4,14 +4,9 @@ import {
     Box,
     Flex,
     Heading,
-    Text,
-    Grid,
-    Card,
-    CardHeader,
-    CardBody,
-    Image
+    Button
   } from '@chakra-ui/react';
-
+import { AddIcon } from '@chakra-ui/icons';
 import ListarProjetos from './components/ListarProjetos';
 
 function App() {
@@ -28,11 +23,14 @@ function App() {
                         color="white"
                         p={10}
                         textAlign="center"
+                        mb={4}
                     >
                         <Heading>Gerenciador de Projetos</Heading>
                     </Flex>
-                    
-                    <ListarProjetos />
+                    <Box p={10}>
+                        <ListarProjetos/>
+                        <Button leftIcon={<AddIcon />} colorScheme='teal' size='lg' variant='solid'>Novo projeto</Button>
+                    </Box>
                 </Box>
             </div>
         </ChakraProvider>
