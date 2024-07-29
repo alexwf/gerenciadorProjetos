@@ -22,6 +22,7 @@ import {
     useDisclosure,
     Button
 } from '@chakra-ui/react';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import ListarAtividades from './ListarAtividades';
 import useProjetos from '../hooks/useProjetos';
 
@@ -73,7 +74,7 @@ const ListarProjetos = forwardRef((props, ref) => {
                                 </CircularProgress>
                             </CardHeader>
                             <CardBody>
-                                <Heading size="md">{`${projeto.id} - ${projeto.nome}`}</Heading>
+                                <Heading size="md">{projeto.nome}</Heading>
                                 <Text mt={2}>Início: {formatDate(projeto.data_inicio)}</Text>
                                 <Text mt={2}>Fim: {formatDate(projeto.data_fim)}</Text>
                                 {projeto.atrasado ? <Text color="tomato" mt={2}>EM ATRASO</Text> : <Text color="teal" mt={2}>NO PRAZO</Text>}
@@ -96,10 +97,8 @@ const ListarProjetos = forwardRef((props, ref) => {
                         </ModalBody>
 
                         <ModalFooter>
-                            <Button colorScheme='teal' mr={3} onClick={onClose}>
-                                Fechar
-                            </Button>
-                            <Button variant='ghost'>Nova atividade</Button>
+                            <Button leftIcon={<AddIcon />} variant='solid' colorScheme='teal' mr={3}>Nova atividade</Button>
+                            <Button leftIcon={<DeleteIcon />} variant='solid' colorScheme='red'>Excluir projeto</Button>
                         </ModalFooter>
                     </ModalContent>
                 </Modal>
