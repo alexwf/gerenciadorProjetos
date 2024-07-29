@@ -10,6 +10,12 @@ const listarProjetos = () => {
     return db('projeto').select('*');
 };
 
+const excluirProjeto = (id) => {
+    return db('projeto')
+        .where({id})
+        .del();
+}
+
 const calcularPorcentagemConclusao = async (projetoId) => {
     const atividades = await listarAtividadesPorProjeto(projetoId);
     const totalAtividades = atividades.length;
@@ -31,6 +37,7 @@ const verificarAtraso = async (projetoId, dataFimProjeto) => {
 module.exports = {
     criarProjeto,
     listarProjetos,
+    excluirProjeto,
     calcularPorcentagemConclusao,
     verificarAtraso
 };

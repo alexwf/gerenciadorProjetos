@@ -12,8 +12,13 @@ const listarAtividadesPorProjeto = (idProjeto) => {
     return db('atividade').where('id_projeto', idProjeto);
 }
 
+const excluirAtividadesPorProjeto = (projetoId) => {
+    return db('atividade').where({ id_projeto: projetoId }).del();
+}
+
 module.exports = {
     criarAtividade,
     listarAtividades,
-    listarAtividadesPorProjeto
+    listarAtividadesPorProjeto,
+    excluirAtividadesPorProjeto
 };

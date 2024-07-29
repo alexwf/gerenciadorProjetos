@@ -1,4 +1,5 @@
 const projetoModel = require('../models/Projeto');
+const atividadeModel = require('../models/Atividade');
 
 const criarProjeto = async (req, res) => {
     const { nome, data_inicio, data_fim } = req.body;
@@ -38,13 +39,30 @@ const listarProjetos = async (req, res) => {
     }
 };
 
+const excluirProjeto = async (req, res) => {
+    const { id_projeto } = req.params;
+
+    try {
+        await atividadeModel.excluirAtividadesPorProjeto(id_projeto);
+        
+        const rowsAffected = await projetoModel.excluirProjeto(id_projeto);
+
+        if (rowsAffected > 0) {
+            res.status(204).send();
+        } else {
+            res.status(404).json({ error: 'Projeto não encontrado.' });
+        }
+    } catch (err) {
+        res.status(500).json({ error: 'Erro ao excluir projeto.' });
+    }
+};
+
 const calcularPorcentagemConclusao = async (req, res) => {
     try {
         const { id_projeto } = req.params;
         const conclusao = await projetoModel.calcularPorcentagemConclusao(id_projeto);
         res.status(200).json(conclusao);
     } catch (err) {
-        console.error('Erro ao calcular conclusao:', err);
         res.status(500).json({ error: 'Erro ao calcular conclusao.' });
     }
 }
@@ -52,5 +70,6 @@ const calcularPorcentagemConclusao = async (req, res) => {
 module.exports = {
     criarProjeto,
     listarProjetos,
+    excluirProjeto,
     calcularPorcentagemConclusao
 };
