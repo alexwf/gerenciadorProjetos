@@ -45,7 +45,7 @@ const ModalNovaAtividade = ({ isOpen, onClose, idProjeto, onSave }) => {
             });
             fetchAtividades();
             onSave();
-            onClose();
+            handleClose();
         } catch (error) {
             toast({
                 title: 'Erro ao criar atividade',
