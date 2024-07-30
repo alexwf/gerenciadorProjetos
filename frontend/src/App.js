@@ -24,41 +24,41 @@ function App() {
 
     return (
         <ChakraProvider>
-                <Box>
-                    <Flex
-                        as="header"
-                        direction="column"
-                        align="center"
-                        justify="center"
-                        bg="teal.500"
-                        color="white"
-                        p={10}
-                        textAlign="center"
-                        mb={4}
+            <Box>
+                <Flex
+                    as="header"
+                    direction="column"
+                    align="center"
+                    justify="center"
+                    bg="teal.500"
+                    color="white"
+                    p={10}
+                    textAlign="center"
+                    mb={4}
+                >
+                    <Heading>Gerenciador de Projetos</Heading>
+                </Flex>
+                <Box p={10}>
+                    <ListarProjetos ref={projetosRef} />
+                    <Button
+                        leftIcon={<AddIcon />}
+                        colorScheme='teal'
+                        size='lg'
+                        variant='solid'
+                        position="fixed"
+                        bottom={4}
+                        right={4}
+                        onClick={onOpen}
                     >
-                        <Heading>Gerenciador de Projetos</Heading>
-                    </Flex>
-                    <Box p={10}>
-                        <ListarProjetos ref={projetosRef}/>
-                        <Button
-                            leftIcon={<AddIcon />}
-                            colorScheme='teal'
-                            size='lg'
-                            variant='solid'
-                            position="fixed"
-                            bottom={4}
-                            right={4}
-                            onClick={onOpen}
-                        >
-                            Novo projeto
-                        </Button>
-                        <ModalNovoProjeto
-                            isOpen={isOpen}
-                            onClose={onClose}
-                            onSave={handleNovoProjetoSave}
-                        />
-                    </Box>
+                        Novo projeto
+                    </Button>
+                    <ModalNovoProjeto
+                        isOpen={isOpen}
+                        onClose={onClose}
+                        onSave={handleNovoProjetoSave}
+                    />
                 </Box>
+            </Box>
         </ChakraProvider>
     );
 }

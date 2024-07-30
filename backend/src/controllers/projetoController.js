@@ -39,6 +39,32 @@ const listarProjetos = async (req, res) => {
     }
 };
 
+const listarProjeto = async (req, res) => {
+    const { id_projeto } = req.params;
+
+    try {
+        const projeto = await projetoModel.listarProjeto(id_projeto);
+
+        if (!projeto) {
+            return res.status(404).json({ error: 'Projeto não encontrado.' });
+        }
+
+        const perc_conclusao = await projetoModel.calcularPorcentagemConclusao(projeto.id);
+        const atrasado = await projetoModel.verificarAtraso(projeto.id, projeto.data_fim);
+
+        const projetoComStatus = {
+            ...projeto,
+            perc_conclusao,
+            atrasado
+        };
+
+        res.status(200).json(projetoComStatus);
+    } catch (error) {
+        console.error('Erro ao listar o projeto:', error);
+        res.status(500).json({ message: 'Erro ao listar o projeto' });
+    }
+}
+
 const excluirProjeto = async (req, res) => {
     const { id_projeto } = req.params;
 
@@ -70,6 +96,7 @@ const calcularPorcentagemConclusao = async (req, res) => {
 module.exports = {
     criarProjeto,
     listarProjetos,
+    listarProjeto,
     excluirProjeto,
     calcularPorcentagemConclusao
 };

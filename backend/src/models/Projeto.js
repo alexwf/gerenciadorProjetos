@@ -10,9 +10,13 @@ const listarProjetos = () => {
     return db('projeto').select('*');
 };
 
+const listarProjeto = (id) => {
+    return db('projeto').where({ id }).first();
+}
+
 const excluirProjeto = (id) => {
     return db('projeto')
-        .where({id})
+        .where({ id })
         .del();
 }
 
@@ -20,23 +24,24 @@ const calcularPorcentagemConclusao = async (projetoId) => {
     const atividades = await listarAtividadesPorProjeto(projetoId);
     const totalAtividades = atividades.length;
     const atividadesConcluidas = atividades.filter(atividade => atividade.finalizada).length;
-    
+
     return totalAtividades > 0 ? (atividadesConcluidas / totalAtividades) * 100 : 0;
 }
 
 const verificarAtraso = async (projetoId, dataFimProjeto) => {
     const atividades = await listarAtividadesPorProjeto(projetoId);
     const maiorDataFimAtividade = atividades.reduce((max, atividade) => {
-      const dataFim = new Date(atividade.data_fim);
-      return dataFim > max ? dataFim : max;
+        const dataFim = new Date(atividade.data_fim);
+        return dataFim > max ? dataFim : max;
     }, new Date(0));
 
     return maiorDataFimAtividade > new Date(dataFimProjeto);
-  }
+}
 
 module.exports = {
     criarProjeto,
     listarProjetos,
+    listarProjeto,
     excluirProjeto,
     calcularPorcentagemConclusao,
     verificarAtraso
