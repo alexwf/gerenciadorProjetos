@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle, forwardRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, forwardRef, useState, useCallback } from 'react';
 import { formatDate } from '../utils/dateUtils';
 import {
     Box,
@@ -12,7 +12,7 @@ const ListarAtividades = forwardRef(({ idProjeto }, ref) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const getAtividades = async() => {
+    const getAtividades = useCallback(async () => {
         setLoading(true);
         try {
             const response = await fetchAtividades(idProjeto);
@@ -22,7 +22,7 @@ const ListarAtividades = forwardRef(({ idProjeto }, ref) => {
             setError("Erro ao carregar atividades");
         }
         setLoading(false)
-    };
+    }, [idProjeto]);
 
     useImperativeHandle(ref, () => ({
         fetchAtividades: getAtividades
@@ -30,7 +30,7 @@ const ListarAtividades = forwardRef(({ idProjeto }, ref) => {
 
     useEffect(() => {
         getAtividades();
-    }, [idProjeto]);
+    }, [getAtividades]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
