@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { fetchAtividades as fetchAtividadesAPI } from '../api/apiService';
 
 const useAtividades = (idProjeto) => {
@@ -16,6 +16,10 @@ const useAtividades = (idProjeto) => {
             setLoading(false);
         }
     }, [idProjeto]);
+
+    useEffect(() => {
+        fetchAtividades();
+    }, [fetchAtividades]);
 
     return { atividades, loading, error, fetchAtividades };
 };

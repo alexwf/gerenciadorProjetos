@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle, forwardRef, useState } from 'react';
+import React, { useImperativeHandle, forwardRef, useState } from 'react';
 import { formatDate } from '../utils/dateUtils';
 import { arredondarPercentual } from '../utils/mathUtils'
 import {
@@ -34,10 +34,6 @@ const ListarProjetos = forwardRef((props, ref) => {
     useImperativeHandle(ref, () => ({
         fetchProjetos
     }));
-
-    useEffect(() => {
-        fetchProjetos();
-    }, [fetchProjetos]);
 
     const handleCardClick = (projeto) => {
         setSelectedProjeto(projeto);

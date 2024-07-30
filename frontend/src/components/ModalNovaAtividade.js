@@ -13,20 +13,18 @@ import {
     Button,
     useToast
 } from '@chakra-ui/react';
-import { criarProjeto } from '../api/apiService';
-import useProjetos from '../hooks/useProjetos';
+import axios from 'axios';
 
-const ModalNovoProjeto = ({ isOpen, onClose, onSave }) => {
+const ModalNovaAtividade = ({ isOpen, onClose, onSave }) => {
     const nomeRef = useRef();
     const dataInicioRef = useRef();
     const dataFimRef = useRef();
-    const { fetchProjetos } = useProjetos(onClose);
     
     const toast = useToast();
 
     const handleSave = async () => {
         try {
-            await criarProjeto({
+            await axios.post('http://localhost:3001/api/criarProjeto', {
                 nome: nomeRef.current.value,
                 data_inicio: dataInicioRef.current.value,
                 data_fim: dataFimRef.current.value,
@@ -39,7 +37,6 @@ const ModalNovoProjeto = ({ isOpen, onClose, onSave }) => {
                 isClosable: true,
                 position: 'top'
             });
-            fetchProjetos();
             onSave();
         } catch (error) {
             toast({
@@ -56,6 +53,7 @@ const ModalNovoProjeto = ({ isOpen, onClose, onSave }) => {
     };
 
     const handleClose = () => {
+        // Limpar os campos utilizando refs para resetar os valores
         nomeRef.current.value = '';
         dataInicioRef.current.value = '';
         dataFimRef.current.value = '';
@@ -64,7 +62,7 @@ const ModalNovoProjeto = ({ isOpen, onClose, onSave }) => {
 
     return (
         <Modal
-            initialFocusRef={nomeRef}
+            initialFocusRef={nomeRef} // Inicializa o foco no campo "Nome"
             isOpen={isOpen}
             onClose={handleClose}
             isCentered
@@ -116,4 +114,4 @@ const ModalNovoProjeto = ({ isOpen, onClose, onSave }) => {
     );
 }
 
-export default ModalNovoProjeto;
+export default ModalNovaAtividade;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { formatDate } from '../utils/dateUtils';
 import {
     Box,
@@ -8,11 +8,7 @@ import {
 import useAtividades from '../hooks/useAtividades';
 
 const ListarAtividades = ({ idProjeto }) => {
-    const { atividades, loading, error, fetchAtividades } = useAtividades(idProjeto);
-
-    useEffect(() => {
-        fetchAtividades();
-    }, [fetchAtividades]);
+    const { atividades, loading, error } = useAtividades(idProjeto);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;

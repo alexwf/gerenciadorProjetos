@@ -1,5 +1,8 @@
-import { useState, useCallback } from 'react';
-import { fetchProjetos as fetchProjetosAPI, excluirProjeto as excluirProjetoAPI } from '../api/apiService';
+import { useState, useEffect, useCallback } from 'react';
+import {
+    fetchProjetos as fetchProjetosAPI,
+    excluirProjeto as excluirProjetoAPI
+} from '../api/apiService';
 
 const useProjetos = (onClose) => {
     const [projetos, setProjetos] = useState([]);
@@ -25,7 +28,11 @@ const useProjetos = (onClose) => {
         } catch (err) {
             setError('Erro ao excluir projeto');
         }
-    }
+    };
+
+    useEffect(() => {
+        fetchProjetos();
+    }, [fetchProjetos]);
 
     return { projetos, loading, error, fetchProjetos, excluirProjeto };
 };
