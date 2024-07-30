@@ -3,12 +3,14 @@ const atividadeModel = require('../models/Atividade');
 const criarAtividade = async (req, res) => {
   const { id_projeto, nome, data_inicio, data_fim, finalizada } = req.body;
 
-  if (!id_projeto || !nome || !data_inicio || !data_fim) {
+  const nomeTrimmed = nome.trim();
+
+  if (!id_projeto || !nomeTrimmed || !data_inicio || !data_fim) {
     return res.status(400).json({ error: 'Preencha todos os campos obrigatórios!' });
   }
 
   try {
-    const [id] = await atividadeModel.criarAtividade(id_projeto, nome, data_inicio, data_fim, finalizada);
+    const [id] = await atividadeModel.criarAtividade(id_projeto, nomeTrimmed, data_inicio, data_fim, finalizada);
     res.status(201).json({ message: 'Atividade criada com sucesso!', id });
   } catch (err) {
     console.error('Erro ao inserir atividade:', err);

@@ -44,4 +44,13 @@ export const fetchAtividades = async (idProjeto) => {
     }
 };
 
+export const criarAtividade = async (atividade) => {
+    try {
+        const response = await api.post('/criarAtividade', atividade);
+        return response.data;
+    } catch (error) {
+        handleApiError(error);
+    }
+};
+
 export default api;

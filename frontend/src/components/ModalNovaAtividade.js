@@ -11,39 +11,42 @@ import {
     FormLabel,
     Input,
     Button,
-    useToast
+    useToast,
+    Checkbox
 } from '@chakra-ui/react';
-import axios from 'axios';
+import { criarAtividade } from '../api/apiService';
 
-const ModalNovaAtividade = ({ isOpen, onClose, onSave }) => {
+const ModalNovaAtividade = ({ isOpen, onClose, idProjeto, onSave }) => {
     const nomeRef = useRef();
     const dataInicioRef = useRef();
     const dataFimRef = useRef();
-    
+    const finalizadaRef = useRef(false);
+
     const toast = useToast();
 
     const handleSave = async () => {
         try {
-            await axios.post('http://localhost:3001/api/criarProjeto', {
+            await criarAtividade({
+                id_projeto: idProjeto,
                 nome: nomeRef.current.value,
                 data_inicio: dataInicioRef.current.value,
                 data_fim: dataFimRef.current.value,
+                finalizada: finalizadaRef.current
             });
 
             toast({
-                title: 'Projeto criado com sucesso!',
+                title: 'Atividade criada com sucesso!',
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
                 position: 'top'
             });
             onSave();
+            onClose();
         } catch (error) {
             toast({
-                title: 'Erro ao criar projeto',
-                description: error.response && error.response.data && error.response.data.error
-                    ? error.response.data.error
-                    : "Houve um erro ao criar o projeto.",
+                title: 'Erro ao criar atividade',
+                description: error.error ? error.error : "Houve um erro ao criar a atividade.",
                 status: 'error',
                 duration: 5000,
                 isClosable: true,
@@ -53,16 +56,16 @@ const ModalNovaAtividade = ({ isOpen, onClose, onSave }) => {
     };
 
     const handleClose = () => {
-        // Limpar os campos utilizando refs para resetar os valores
         nomeRef.current.value = '';
         dataInicioRef.current.value = '';
         dataFimRef.current.value = '';
+        finalizadaRef.current = false;
         onClose();
     };
 
     return (
         <Modal
-            initialFocusRef={nomeRef} // Inicializa o foco no campo "Nome"
+            initialFocusRef={nomeRef}
             isOpen={isOpen}
             onClose={handleClose}
             isCentered
@@ -70,7 +73,7 @@ const ModalNovaAtividade = ({ isOpen, onClose, onSave }) => {
         >
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader>Novo projeto</ModalHeader>
+                <ModalHeader>Nova atividade</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody pb={6}>
                     <FormControl isRequired>
@@ -100,7 +103,16 @@ const ModalNovaAtividade = ({ isOpen, onClose, onSave }) => {
                             type='date'
                         />
                     </FormControl>
-                    
+
+                    <FormControl mt={4}>
+                            <Checkbox
+                                colorScheme='teal'
+                                onChange={(e) => finalizadaRef.current = e.target.checked}
+                            >
+                                Finalizada?
+                            </Checkbox>
+                    </FormControl>
+
                 </ModalBody>
 
                 <ModalFooter>

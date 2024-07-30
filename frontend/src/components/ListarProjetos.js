@@ -25,11 +25,14 @@ import {
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import ListarAtividades from './ListarAtividades';
 import useProjetos from '../hooks/useProjetos';
+import ModalNovaAtividade from './ModalNovaAtividade';
 
 const ListarProjetos = forwardRef((props, ref) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { projetos, loading, error, fetchProjetos, excluirProjeto } = useProjetos(onClose);
-    const [selectedProjeto, setSelectedProjeto] = useState(null);    
+    const [selectedProjeto, setSelectedProjeto] = useState(null);
+    const [isActivityModalOpen, setActivityModalOpen] = useState(false);
+    const atividadesRef = React.useRef();
 
     useImperativeHandle(ref, () => ({
         fetchProjetos
@@ -39,6 +42,18 @@ const ListarProjetos = forwardRef((props, ref) => {
         setSelectedProjeto(projeto);
         onOpen();
     }
+
+    const handleOpenActivityModal  = () => {
+        setActivityModalOpen(true);
+    }
+
+    const handleCloseActivityModal = () => {
+        setActivityModalOpen(false);
+    };
+
+    const handleNovaAtividadeSave = () => {
+        handleCloseActivityModal();
+    };
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
@@ -89,11 +104,23 @@ const ListarProjetos = forwardRef((props, ref) => {
                             <Progress colorScheme='teal' size='sm' value={arredondarPercentual(selectedProjeto.perc_conclusao)} />
                             <Text mt={2}>Início: {formatDate(selectedProjeto.data_inicio)} - Fim: {formatDate(selectedProjeto.data_fim)}</Text>
                             {selectedProjeto.atrasado ? <Text color="tomato" mt={2}>EM ATRASO</Text> : <Text color="teal" mt={2}>NO PRAZO</Text>}
-                            {<ListarAtividades idProjeto={selectedProjeto.id} />}
+                            {<ListarAtividades idProjeto={selectedProjeto.id} ref={atividadesRef} />}
                         </ModalBody>
 
                         <ModalFooter>
-                            <Button leftIcon={<AddIcon />} variant='solid' colorScheme='teal' mr={3}>Nova atividade</Button>
+                            <Button
+                                leftIcon={<AddIcon />}
+                                variant='solid'
+                                colorScheme='teal'
+                                mr={3}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleOpenActivityModal();
+                                }}
+                            >
+                                Nova atividade
+                            </Button>
+
                             <Button
                                 leftIcon={<DeleteIcon />}
                                 variant='solid'
@@ -108,6 +135,14 @@ const ListarProjetos = forwardRef((props, ref) => {
                         </ModalFooter>
                     </ModalContent>
                 </Modal>
+            )}
+            {selectedProjeto && (
+                <ModalNovaAtividade
+                    isOpen={isActivityModalOpen}
+                    onClose={handleCloseActivityModal}
+                    idProjeto={selectedProjeto.id}  
+                    onSave={handleNovaAtividadeSave}
+                />
             )}
         </Box>
     );

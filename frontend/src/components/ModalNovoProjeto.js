@@ -44,9 +44,7 @@ const ModalNovoProjeto = ({ isOpen, onClose, onSave }) => {
         } catch (error) {
             toast({
                 title: 'Erro ao criar projeto',
-                description: error.response && error.response.data && error.response.data.error
-                    ? error.response.data.error
-                    : "Houve um erro ao criar o projeto.",
+                description: error.error ? error.error : "Houve um erro ao criar o projeto.",
                 status: 'error',
                 duration: 5000,
                 isClosable: true,
