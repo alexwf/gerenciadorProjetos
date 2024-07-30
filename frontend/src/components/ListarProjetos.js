@@ -43,7 +43,7 @@ const ListarProjetos = forwardRef((props, ref) => {
         onOpen();
     }
 
-    const handleOpenActivityModal  = () => {
+    const handleOpenActivityModal = () => {
         setActivityModalOpen(true);
     }
 
@@ -52,6 +52,10 @@ const ListarProjetos = forwardRef((props, ref) => {
     };
 
     const handleNovaAtividadeSave = () => {
+        if (atividadesRef.current) {
+            atividadesRef.current.fetchAtividades();
+        }
+        fetchProjetos();
         handleCloseActivityModal();
     };
 
@@ -80,7 +84,7 @@ const ListarProjetos = forwardRef((props, ref) => {
                         }}
                     >
                         <CardHeader>
-                            <CircularProgress value={arredondarPercentual(projeto.perc_conclusao)} color='teal' size='115px'>
+                            <CircularProgress value={arredondarPercentual(projeto.perc_conclusao)} color={projeto.atrasado ? "tomato" : "teal"} size='115px'>
                                 <CircularProgressLabel>{arredondarPercentual(projeto.perc_conclusao)}%</CircularProgressLabel>
                             </CircularProgress>
                         </CardHeader>
@@ -140,7 +144,7 @@ const ListarProjetos = forwardRef((props, ref) => {
                 <ModalNovaAtividade
                     isOpen={isActivityModalOpen}
                     onClose={handleCloseActivityModal}
-                    idProjeto={selectedProjeto.id}  
+                    idProjeto={selectedProjeto.id}
                     onSave={handleNovaAtividadeSave}
                 />
             )}

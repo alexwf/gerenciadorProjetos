@@ -15,12 +15,14 @@ import {
     Checkbox
 } from '@chakra-ui/react';
 import { criarAtividade } from '../api/apiService';
+import useAtividades from '../hooks/useAtividades';
 
 const ModalNovaAtividade = ({ isOpen, onClose, idProjeto, onSave }) => {
     const nomeRef = useRef();
     const dataInicioRef = useRef();
     const dataFimRef = useRef();
     const finalizadaRef = useRef(false);
+    const { fetchAtividades } = useAtividades();
 
     const toast = useToast();
 
@@ -41,6 +43,7 @@ const ModalNovaAtividade = ({ isOpen, onClose, idProjeto, onSave }) => {
                 isClosable: true,
                 position: 'top'
             });
+            fetchAtividades();
             onSave();
             onClose();
         } catch (error) {
