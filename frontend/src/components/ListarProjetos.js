@@ -27,15 +27,15 @@ import ListarAtividades from './ListarAtividades';
 import useProjetos from '../hooks/useProjetos';
 
 const ListarProjetos = forwardRef((props, ref) => {
-    const { projetos, loading, error, fetchProjetos } = useProjetos();
-    const [selectedProjeto, setSelectedProjeto] = useState(null);
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const { projetos, loading, error, fetchProjetos, excluirProjeto } = useProjetos(onClose);
+    const [selectedProjeto, setSelectedProjeto] = useState(null);    
 
     useImperativeHandle(ref, () => ({
         fetchProjetos
     }));
 
-    useEffect(() => {        
+    useEffect(() => {
         fetchProjetos();
     }, [fetchProjetos]);
 
@@ -51,35 +51,35 @@ const ListarProjetos = forwardRef((props, ref) => {
         <Box mb={10}>
             <SimpleGrid columns={[1, 2, 3, 4, 5]} spacing={4}>
                 {projetos.map(projeto => (
-                        <Card
-                            key={projeto.id}
-                            borderRadius="md"
-                            overflow="hidden"
-                            display="flex"
-                            flexDirection="column"
-                            alignItems="center"
-                            justifyContent="center"
-                            textAlign="center"
-                            onClick={() => handleCardClick(projeto)}
-                            transition="border 0.2s"
-                            border="2px solid transparent"
-                            _hover={{
-                                border: '2px solid teal',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            <CardHeader>
-                                <CircularProgress value={arredondarPercentual(projeto.perc_conclusao)} color='teal' size='115px'>
-                                    <CircularProgressLabel>{arredondarPercentual(projeto.perc_conclusao)}%</CircularProgressLabel>
-                                </CircularProgress>
-                            </CardHeader>
-                            <CardBody>
-                                <Heading size="md">{projeto.nome}</Heading>
-                                <Text mt={2}>Início: {formatDate(projeto.data_inicio)}</Text>
-                                <Text mt={2}>Fim: {formatDate(projeto.data_fim)}</Text>
-                                {projeto.atrasado ? <Text color="tomato" mt={2}>EM ATRASO</Text> : <Text color="teal" mt={2}>NO PRAZO</Text>}
-                            </CardBody>
-                        </Card>
+                    <Card
+                        key={projeto.id}
+                        borderRadius="md"
+                        overflow="hidden"
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
+                        justifyContent="center"
+                        textAlign="center"
+                        onClick={() => handleCardClick(projeto)}
+                        transition="border 0.2s"
+                        border="2px solid transparent"
+                        _hover={{
+                            border: '2px solid teal',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        <CardHeader>
+                            <CircularProgress value={arredondarPercentual(projeto.perc_conclusao)} color='teal' size='115px'>
+                                <CircularProgressLabel>{arredondarPercentual(projeto.perc_conclusao)}%</CircularProgressLabel>
+                            </CircularProgress>
+                        </CardHeader>
+                        <CardBody>
+                            <Heading size="md">{projeto.nome}</Heading>
+                            <Text mt={2}>Início: {formatDate(projeto.data_inicio)}</Text>
+                            <Text mt={2}>Fim: {formatDate(projeto.data_fim)}</Text>
+                            {projeto.atrasado ? <Text color="tomato" mt={2}>EM ATRASO</Text> : <Text color="teal" mt={2}>NO PRAZO</Text>}
+                        </CardBody>
+                    </Card>
                 ))}
             </SimpleGrid>
             {selectedProjeto && (
@@ -98,7 +98,17 @@ const ListarProjetos = forwardRef((props, ref) => {
 
                         <ModalFooter>
                             <Button leftIcon={<AddIcon />} variant='solid' colorScheme='teal' mr={3}>Nova atividade</Button>
-                            <Button leftIcon={<DeleteIcon />} variant='solid' colorScheme='red'>Excluir projeto</Button>
+                            <Button
+                                leftIcon={<DeleteIcon />}
+                                variant='solid'
+                                colorScheme='red'
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    excluirProjeto(selectedProjeto.id);
+                                }}
+                            >
+                                Excluir projeto
+                            </Button>
                         </ModalFooter>
                     </ModalContent>
                 </Modal>

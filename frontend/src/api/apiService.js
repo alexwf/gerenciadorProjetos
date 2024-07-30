@@ -27,6 +27,14 @@ export const criarProjeto = async (projeto) => {
     }
 };
 
+export const excluirProjeto = async (idProjeto) => {
+    try {
+        await api.delete(`/excluirProjeto/${idProjeto}`);
+    } catch (error) {
+        handleApiError(error);
+    }
+}
+
 export const fetchAtividades = async (idProjeto) => {
     try {
         const response = await api.get(`/listarAtividades/${idProjeto}`);
