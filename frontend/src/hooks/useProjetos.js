@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
+    fetchProjeto as fetchProjetoAPI,
     fetchProjetos as fetchProjetosAPI,
     excluirProjeto as excluirProjetoAPI
 } from '../api/apiService';
@@ -13,6 +14,16 @@ const useProjetos = (onClose) => {
         try {
             const data = await fetchProjetosAPI();
             setProjetos(data);
+        } catch (err) {
+            setError('Erro ao carregar projetos');
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const fetchProjeto = useCallback(async (id_projeto) => {
+        try {
+            const data = await fetchProjetoAPI(id_projeto);
         } catch (err) {
             setError('Erro ao carregar projetos');
         } finally {
@@ -34,7 +45,7 @@ const useProjetos = (onClose) => {
         fetchProjetos();
     }, [fetchProjetos]);
 
-    return { projetos, loading, error, fetchProjetos, excluirProjeto };
+    return { projetos, loading, error, fetchProjetos, fetchProjeto, excluirProjeto };
 };
 
 export default useProjetos;

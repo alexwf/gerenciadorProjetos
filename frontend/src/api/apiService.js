@@ -18,6 +18,15 @@ export const fetchProjetos = async () => {
     }
 };
 
+export const fetchProjeto = async (idProjeto) => {
+    try {
+        const response = await api.get(`/listarProjetos/${idProjeto}`);
+        return response.data;
+    } catch (error) {
+        handleApiError(error);
+    }
+};
+
 export const criarProjeto = async (projeto) => {
     try {
         const response = await api.post('/criarProjeto', projeto);
