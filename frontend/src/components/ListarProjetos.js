@@ -25,7 +25,7 @@ import {
     TagLeftIcon,
     TagLabel
 } from '@chakra-ui/react';
-import { AddIcon, DeleteIcon, CheckCircleIcon, TimeIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon, CheckIcon, TimeIcon } from '@chakra-ui/icons';
 import ListarAtividades from './ListarAtividades';
 import useProjetos from '../hooks/useProjetos';
 import ModalNovaAtividade from './ModalNovaAtividade';
@@ -101,7 +101,7 @@ const ListarProjetos = forwardRef((props, ref) => {
                             <Heading size="md">{projeto.nome}</Heading>
                             <Text mt={2}>Início: {formatDate(projeto.data_inicio)}</Text>
                             <Text mt={2}>Fim: {formatDate(projeto.data_fim)}</Text>
-                            <Box pt='2'>
+                            <Box pt={2}>
                                 {
                                     projeto.atrasado ?
                                         <Tag variant='subtle' colorScheme='red'>
@@ -110,7 +110,7 @@ const ListarProjetos = forwardRef((props, ref) => {
                                         </Tag>
                                         :
                                         <Tag variant='subtle' colorScheme='teal'>
-                                            <TagLeftIcon boxSize='12px' as={CheckCircleIcon} />
+                                            <TagLeftIcon boxSize='12px' as={CheckIcon} />
                                             <TagLabel>NO PRAZO</TagLabel>
                                         </Tag>
                                 }
@@ -123,13 +123,31 @@ const ListarProjetos = forwardRef((props, ref) => {
                 <Modal key={modalKey} isOpen={isOpen} onClose={onClose} isCentered size="xl">
                     <ModalOverlay />
                     <ModalContent>
-                        <ModalHeader pb={0}>{selectedProjeto.nome}</ModalHeader>
+                        <ModalHeader pb={0}>
+                            <SimpleGrid columns={2}>{selectedProjeto.nome}
+                            <Box display="flex" alignItems="center" justifyContent="flex-end" gap={2} pr={10}>
+                                    {
+                                        selectedProjeto.atrasado ?
+                                            <Tag variant='subtle' colorScheme='red'>
+                                                <TagLeftIcon boxSize='12px' as={TimeIcon} />
+                                                <TagLabel>EM ATRASO</TagLabel>
+                                            </Tag>
+                                            :
+                                            <Tag variant='subtle' colorScheme='teal'>
+                                                <TagLeftIcon boxSize='12px' as={CheckIcon} />
+                                                <TagLabel>NO PRAZO</TagLabel>
+                                            </Tag>
+                                    }
+                                </Box>
+                            </SimpleGrid>
+                        </ModalHeader>
                         <ModalCloseButton />
                         <ModalBody pt={0}>
-                            <Text mt={2}>{arredondarPercentual(selectedProjeto.perc_conclusao)}%</Text>
-                            <Progress colorScheme={selectedProjeto.atrasado ? "red" : "teal"} size='sm' value={arredondarPercentual(selectedProjeto.perc_conclusao)} />
-                            <Text mt={2}>Início: {formatDate(selectedProjeto.data_inicio)} - Fim: {formatDate(selectedProjeto.data_fim)}</Text>
-                            {selectedProjeto.atrasado ? <Text color="red" mt={2}>EM ATRASO</Text> : <Text color="teal" mt={2}>NO PRAZO</Text>}
+                            <Box pb={3}>
+                                <Text mt={2}>Início: {formatDate(selectedProjeto.data_inicio)} - Fim: {formatDate(selectedProjeto.data_fim)}</Text>
+                                <Text mt={2}>{arredondarPercentual(selectedProjeto.perc_conclusao)}%</Text>
+                                <Progress colorScheme={selectedProjeto.atrasado ? "red" : "teal"} size='sm' value={arredondarPercentual(selectedProjeto.perc_conclusao)} />
+                            </Box>
                             <ListarAtividades idProjeto={selectedProjeto.id} ref={atividadesRef} />
                         </ModalBody>
                         <ModalFooter>

@@ -10,10 +10,13 @@ import {
     StackDivider,
     Tag,
     TagLeftIcon,
-    TagLabel
+    TagLabel,
+    IconButton,
+    SimpleGrid,
+    Tooltip
 } from '@chakra-ui/react';
 import { fetchAtividades } from '../api/apiService';
-import { CheckCircleIcon, TimeIcon } from '@chakra-ui/icons';
+import { CheckCircleIcon, TimeIcon, EditIcon } from '@chakra-ui/icons';
 
 const ListarAtividades = forwardRef(({ idProjeto }, ref) => {
     const [atividades, setAtividades] = useState([]);
@@ -49,6 +52,7 @@ const ListarAtividades = forwardRef(({ idProjeto }, ref) => {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
+    if (atividades.length == 0) return;
 
     return (
         <Card>
@@ -57,24 +61,35 @@ const ListarAtividades = forwardRef(({ idProjeto }, ref) => {
                     {atividades.map(atividade => (
 
                         <Box key={atividade.id}>
-                            <Heading size='xs' textTransform='uppercase'>
-                                {atividade.nome}
-                            </Heading>
-                            <Text pt='2' fontSize='sm'>Início: {formatDate(atividade.data_inicio)} - Fim: {formatDate(atividade.data_fim)}</Text>
-                            <Box pt='2'>
-                                {
-                                    atividade.finalizada ?
-                                        <Tag variant='subtle' colorScheme='teal'>
-                                            <TagLeftIcon boxSize='12px' as={CheckCircleIcon} />
-                                            <TagLabel>Finalizada</TagLabel>
-                                        </Tag>
-                                        :
-                                        <Tag variant='subtle'>
-                                            <TagLeftIcon boxSize='12px' as={TimeIcon} />
-                                            <TagLabel>Andamento</TagLabel>
-                                        </Tag>
-                                }
-                            </Box>
+                            <SimpleGrid columns={2} justifyContent="space-between" alignItems="center" spacing={2}>
+                                <Heading size='xs' textTransform='uppercase'>
+                                    {atividade.nome}
+                                </Heading>
+                                <Box display="flex" alignItems="center" justifyContent="flex-end" gap={2}>
+                                    {
+                                        atividade.finalizada ?
+                                            <Tag variant='subtle' colorScheme='teal' mb={2}>
+                                                <TagLeftIcon boxSize='12px' as={CheckCircleIcon} />
+                                                <TagLabel>Finalizada</TagLabel>
+                                            </Tag>
+                                            :
+                                            <Tag variant='subtle' mb={2}>
+                                                <TagLeftIcon boxSize='12px' as={TimeIcon} />
+                                                <TagLabel>Andamento</TagLabel>
+                                            </Tag>
+                                    }
+                                    <Tooltip label="Editar atividade" aria-label="Editar atividade">
+                                        <IconButton
+                                            size='sm'
+                                            icon={<EditIcon />}
+                                            alignSelf="flex-end"
+                                            alt="Editar atividade"
+                                        />
+                                    </Tooltip>
+                                </Box>
+                                <Text fontSize='sm'>Início: {formatDate(atividade.data_inicio)} - Fim: {formatDate(atividade.data_fim)}</Text>
+
+                            </SimpleGrid>
                         </Box>
                     ))}
                 </Stack>
