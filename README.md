@@ -21,14 +21,16 @@ Este projeto é um gerenciador de projetos simples que permite aos usuários cri
 
 ### Projetos
 
-- **Listar Projetos**: Exibe todos os projetos com informações básicas, como nome, data de início e fim, e percentual de conclusão.
-- **Adicionar Projeto**: Permite a criação de um novo projeto através de um modal.
+- **Listar Projetos**: Exibe todos os projetos com informações básicas, como nome, data de início e fim, percentual de conclusão e se o projeto está dentro do prazo ou atrasado.
+- **Status do projeto**: O projeto estará atrasado caso a maior data final das atividades seja superior a data final do projeto
+- **Percentual de conclusão**: É considerado o número de atividades finalizadas e sem finalizar;
+- **Adicionar Projeto**: Permite a criação de um novo projeto através de um modal preenchendo os campos requeridos (nome, início, fim).
 - **Excluir Projeto**: Remove um projeto da lista.
 
 ### Atividades
 
-- **Listar Atividades**: Exibe todas as atividades de um projeto específico.
-- **Adicionar Atividade**: Permite a criação de uma nova atividade através de um modal.
+- **Listar Atividades**: Exibe todas as atividades de um projeto específico com nome, data de início e fim, e se a atividade encontra-se finalizada.
+- **Adicionar Atividade**: Permite a criação de uma nova atividade através de um modal preenchendo os campos requeridos (nome, início, fim, finalizada?).
 - **Excluir Atividade**: Remove uma atividade de um projeto.
 
 ## Instruções para Executar o Projeto
