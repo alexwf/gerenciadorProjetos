@@ -59,7 +59,7 @@ Este projeto é um gerenciador de projetos simples que permite aos usuários cri
 
 3. **Configure o banco de dados MySQL**
 
-Acesse o MySQL e execute o procedimento no db/banco.sql
+    Acesse o MySQL e execute o procedimento no db/banco.sql
 
 4. **Inicie o servidor backend**
 
