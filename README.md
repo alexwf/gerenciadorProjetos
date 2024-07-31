@@ -51,10 +51,10 @@ Este projeto é um gerenciador de projetos simples que permite aos usuários cri
 2. **Instale as dependências**
 
    ```bash
+    cd backend
     npm install
-    cd client
+    cd frontend
     npm install
-    cd ..
     ```
 
 3. **Configure o banco de dados MySQL**
