@@ -64,11 +64,13 @@ Este projeto é um gerenciador de projetos simples que permite aos usuários cri
 4. **Inicie o servidor backend**
 
     ```bash
+    cd backend
     npm run start
     ```
 
 5. **Inicie o frontend**
     ```bash
+    cd frontend
     npm run start
     ```
 
