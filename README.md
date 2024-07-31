@@ -44,8 +44,8 @@ Este projeto é um gerenciador de projetos simples que permite aos usuários cri
 1. **Clone o repositório**
 
    ```bash
-   git clone https://github.com/seu-usuario/gerenciador-projetos-alex.git
-   cd gerenciador-projetos-alex
+   git clone https://github.com/alexwf/gerenciadorProjetos.git
+   cd gerenciadorProjetos
    ```
 
 2. **Instale as dependências**
