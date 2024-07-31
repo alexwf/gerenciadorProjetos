@@ -36,7 +36,7 @@ function App() {
                     textAlign="center"
                     mb={4}
                 >
-                    <Heading>Gerenciador de Projetos</Heading>
+                    <Heading>Gerenciador de Projetos Alex</Heading>
                 </Flex>
                 <Box p={10}>
                     <ListarProjetos ref={projetosRef} />

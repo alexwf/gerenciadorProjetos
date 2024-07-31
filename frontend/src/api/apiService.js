@@ -62,4 +62,12 @@ export const criarAtividade = async (atividade) => {
     }
 };
 
+export const excluirAtividade = async (idAtividade) => {
+    try {
+        await api.delete(`/excluirAtividade/${idAtividade}`);
+    } catch (error) {
+        handleApiError(error);
+    }
+}
+
 export default api;
