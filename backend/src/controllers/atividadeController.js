@@ -39,8 +39,25 @@ const listarAtividadesPorProjeto = async (req, res) => {
   }
 };
 
+const excluirAtividade = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const rowsAffected = await atividadeModel.excluirAtividade(id);
+
+    if (rowsAffected > 0) {
+      res.status(204).send();
+    } else {
+      res.status(404).json({ error: 'Atividade não encontrada.' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao excluir atividade.' });
+  }
+};
+
 module.exports = {
   criarAtividade,
   listarAtividades,
-  listarAtividadesPorProjeto
+  listarAtividadesPorProjeto,
+  excluirAtividade
 };
