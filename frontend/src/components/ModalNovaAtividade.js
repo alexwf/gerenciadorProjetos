@@ -12,7 +12,7 @@ import {
     Input,
     Button,
     useToast,
-    Checkbox
+    Switch
 } from '@chakra-ui/react';
 import { criarAtividade } from '../api/apiService';
 import useAtividades from '../hooks/useAtividades';
@@ -107,13 +107,15 @@ const ModalNovaAtividade = ({ isOpen, onClose, idProjeto, onSave }) => {
                         />
                     </FormControl>
 
-                    <FormControl mt={4}>
-                            <Checkbox
-                                colorScheme='teal'
-                                onChange={(e) => finalizadaRef.current = e.target.checked}
-                            >
-                                Finalizada?
-                            </Checkbox>
+                    <FormControl mt={4} display="flex" alignItems="center">
+                        <FormLabel htmlFor='finalizada' fontSize='md' pt='2'>Finalizada?</FormLabel>
+                        <Switch
+                            id='finalizada'
+                            colorScheme='teal'
+                            onChange={(e) => finalizadaRef.current = e.target.checked}
+                            size='md'
+                        >
+                        </Switch>
                     </FormControl>
 
                 </ModalBody>

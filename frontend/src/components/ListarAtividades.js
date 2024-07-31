@@ -3,9 +3,17 @@ import { formatDate } from '../utils/dateUtils';
 import {
     Box,
     Heading,
-    Text
+    Text,
+    Card,
+    CardBody,
+    Stack,
+    StackDivider,
+    Tag,
+    TagLeftIcon,
+    TagLabel
 } from '@chakra-ui/react';
 import { fetchAtividades } from '../api/apiService';
+import { CheckCircleIcon, TimeIcon } from '@chakra-ui/icons';
 
 const ListarAtividades = forwardRef(({ idProjeto }, ref) => {
     const [atividades, setAtividades] = useState([]);
@@ -32,19 +40,46 @@ const ListarAtividades = forwardRef(({ idProjeto }, ref) => {
         getAtividades();
     }, [getAtividades]);
 
+    const handleToggle = async (atividade) => {
+        /*
+        const updatedAtividade = { ...atividade, finalizada: !atividade.finalizada };
+        await atualizarAtividade(updatedAtividade);
+        fetchAtividades();*/
+    };
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
 
     return (
-        <Box>
-            {atividades.map(atividade => (
-                <Box key={atividade.id}>
-                    <Heading size="sm" mt={4}>{atividade.nome}</Heading>
-                    <Text mt={1}>Início: {formatDate(atividade.data_inicio)} - Fim: {formatDate(atividade.data_fim)}</Text>
-                    <Text mt={1}>{atividade.finalizada ? "FINALIZADA" : "EM ANDAMENTO"}</Text>
-                </Box>
-            ))}
-        </Box>
+        <Card>
+            <CardBody maxHeight="50vh" overflowY="auto">
+                <Stack divider={<StackDivider />} spacing='3'>
+                    {atividades.map(atividade => (
+
+                        <Box key={atividade.id}>
+                            <Heading size='xs' textTransform='uppercase'>
+                                {atividade.nome}
+                            </Heading>
+                            <Text pt='2' fontSize='sm'>Início: {formatDate(atividade.data_inicio)} - Fim: {formatDate(atividade.data_fim)}</Text>
+                            <Box pt='2'>
+                                {
+                                    atividade.finalizada ?
+                                        <Tag variant='subtle' colorScheme='teal'>
+                                            <TagLeftIcon boxSize='12px' as={CheckCircleIcon} />
+                                            <TagLabel>Finalizada</TagLabel>
+                                        </Tag>
+                                        :
+                                        <Tag variant='subtle'>
+                                            <TagLeftIcon boxSize='12px' as={TimeIcon} />
+                                            <TagLabel>Andamento</TagLabel>
+                                        </Tag>
+                                }
+                            </Box>
+                        </Box>
+                    ))}
+                </Stack>
+            </CardBody>
+        </Card>
     );
 });
 

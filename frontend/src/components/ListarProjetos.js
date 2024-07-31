@@ -20,9 +20,12 @@ import {
     ModalBody,
     ModalCloseButton,
     useDisclosure,
-    Button
+    Button,
+    Tag,
+    TagLeftIcon,
+    TagLabel
 } from '@chakra-ui/react';
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon, CheckCircleIcon, TimeIcon } from '@chakra-ui/icons';
 import ListarAtividades from './ListarAtividades';
 import useProjetos from '../hooks/useProjetos';
 import ModalNovaAtividade from './ModalNovaAtividade';
@@ -98,7 +101,20 @@ const ListarProjetos = forwardRef((props, ref) => {
                             <Heading size="md">{projeto.nome}</Heading>
                             <Text mt={2}>Início: {formatDate(projeto.data_inicio)}</Text>
                             <Text mt={2}>Fim: {formatDate(projeto.data_fim)}</Text>
-                            {projeto.atrasado ? <Text color="red" mt={2}>EM ATRASO</Text> : <Text color="teal" mt={2}>NO PRAZO</Text>}
+                            <Box pt='2'>
+                                {
+                                    projeto.atrasado ?
+                                        <Tag variant='subtle' colorScheme='red'>
+                                            <TagLeftIcon boxSize='12px' as={TimeIcon} />
+                                            <TagLabel>EM ATRASO</TagLabel>
+                                        </Tag>
+                                        :
+                                        <Tag variant='subtle' colorScheme='teal'>
+                                            <TagLeftIcon boxSize='12px' as={CheckCircleIcon} />
+                                            <TagLabel>NO PRAZO</TagLabel>
+                                        </Tag>
+                                }
+                            </Box>
                         </CardBody>
                     </Card>
                 ))}
@@ -107,9 +123,9 @@ const ListarProjetos = forwardRef((props, ref) => {
                 <Modal key={modalKey} isOpen={isOpen} onClose={onClose} isCentered size="xl">
                     <ModalOverlay />
                     <ModalContent>
-                        <ModalHeader>{selectedProjeto.nome}</ModalHeader>
+                        <ModalHeader pb={0}>{selectedProjeto.nome}</ModalHeader>
                         <ModalCloseButton />
-                        <ModalBody>
+                        <ModalBody pt={0}>
                             <Text mt={2}>{arredondarPercentual(selectedProjeto.perc_conclusao)}%</Text>
                             <Progress colorScheme={selectedProjeto.atrasado ? "red" : "teal"} size='sm' value={arredondarPercentual(selectedProjeto.perc_conclusao)} />
                             <Text mt={2}>Início: {formatDate(selectedProjeto.data_inicio)} - Fim: {formatDate(selectedProjeto.data_fim)}</Text>
