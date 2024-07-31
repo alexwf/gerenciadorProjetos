@@ -143,7 +143,7 @@ const ListarProjetos = forwardRef((props, ref) => {
                         </ModalHeader>
                         <ModalCloseButton />
                         <ModalBody pt={0}>
-                            <Box pb={3}>
+                            <Box pb={4}>
                                 <Text mt={2}>Início: {formatDate(selectedProjeto.data_inicio)} - Fim: {formatDate(selectedProjeto.data_fim)}</Text>
                                 <Text mt={2}>{arredondarPercentual(selectedProjeto.perc_conclusao)}%</Text>
                                 <Progress colorScheme={selectedProjeto.atrasado ? "red" : "teal"} size='sm' value={arredondarPercentual(selectedProjeto.perc_conclusao)} />

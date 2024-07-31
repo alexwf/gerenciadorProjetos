@@ -16,7 +16,7 @@ import {
     Tooltip
 } from '@chakra-ui/react';
 import { fetchAtividades } from '../api/apiService';
-import { CheckCircleIcon, TimeIcon, EditIcon } from '@chakra-ui/icons';
+import { CheckCircleIcon, TimeIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
 const ListarAtividades = forwardRef(({ idProjeto }, ref) => {
     const [atividades, setAtividades] = useState([]);
@@ -68,22 +68,31 @@ const ListarAtividades = forwardRef(({ idProjeto }, ref) => {
                                 <Box display="flex" alignItems="center" justifyContent="flex-end" gap={2}>
                                     {
                                         atividade.finalizada ?
-                                            <Tag variant='subtle' colorScheme='teal' mb={2}>
+                                            <Tag variant='outline' colorScheme='teal'>
                                                 <TagLeftIcon boxSize='12px' as={CheckCircleIcon} />
                                                 <TagLabel>Finalizada</TagLabel>
                                             </Tag>
                                             :
-                                            <Tag variant='subtle' mb={2}>
+                                            <Tag variant='outline'>
                                                 <TagLeftIcon boxSize='12px' as={TimeIcon} />
                                                 <TagLabel>Andamento</TagLabel>
                                             </Tag>
                                     }
                                     <Tooltip label="Editar atividade" aria-label="Editar atividade">
                                         <IconButton
+                                        variant="ghost"
                                             size='sm'
                                             icon={<EditIcon />}
                                             alignSelf="flex-end"
-                                            alt="Editar atividade"
+                                        />
+                                    </Tooltip>
+                                    <Tooltip label="Excluir atividade" aria-label="Excluir atividade">
+                                        <IconButton
+                                            variant='ghost'
+                                            size='sm'
+                                            icon={<DeleteIcon />}
+                                            alignSelf="flex-end"
+                                            colorScheme='red'
                                         />
                                     </Tooltip>
                                 </Box>
