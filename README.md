@@ -77,7 +77,8 @@ Este projeto é um gerenciador de projetos simples que permite aos usuários cri
     ```
 
 6. **Acesse o aplicativo**
-Abra o navegador e vá para http://localhost:3000.
+
+    Abra o navegador e vá para http://localhost:3000.
 
 ### Conclusão
 
