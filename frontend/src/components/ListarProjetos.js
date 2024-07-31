@@ -1,6 +1,6 @@
 import React, { useImperativeHandle, forwardRef, useState } from 'react';
 import { formatDate } from '../utils/dateUtils';
-import { arredondarPercentual } from '../utils/mathUtils'
+import { arredondarPercentual } from '../utils/mathUtils';
 import {
     Box,
     Heading,
@@ -28,10 +28,11 @@ import useProjetos from '../hooks/useProjetos';
 import ModalNovaAtividade from './ModalNovaAtividade';
 
 const ListarProjetos = forwardRef((props, ref) => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const { projetos, loading, error, fetchProjetos, excluirProjeto } = useProjetos(onClose);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { projetos, loading, error, fetchProjetos, fetchProjeto, excluirProjeto } = useProjetos(onClose);
     const [selectedProjeto, setSelectedProjeto] = useState(null);
     const [isActivityModalOpen, setActivityModalOpen] = useState(false);
+    const [modalKey, setModalKey] = useState(0);
     const atividadesRef = React.useRef();
 
     useImperativeHandle(ref, () => ({
@@ -45,17 +46,22 @@ const ListarProjetos = forwardRef((props, ref) => {
 
     const handleOpenActivityModal = () => {
         setActivityModalOpen(true);
-    }
+    };
 
     const handleCloseActivityModal = () => {
         setActivityModalOpen(false);
     };
 
-    const handleNovaAtividadeSave = () => {
+    const handleNovaAtividadeSave = async () => {
         if (atividadesRef.current) {
             atividadesRef.current.fetchAtividades();
         }
-        fetchProjetos();
+        await fetchProjetos();
+        if (selectedProjeto) {
+            const projetoAtualizado = await fetchProjeto(selectedProjeto.id);
+            setSelectedProjeto(projetoAtualizado);
+            setModalKey(prevKey => prevKey + 1);
+        }
         handleCloseActivityModal();
     };
 
@@ -84,7 +90,7 @@ const ListarProjetos = forwardRef((props, ref) => {
                         }}
                     >
                         <CardHeader>
-                            <CircularProgress value={arredondarPercentual(projeto.perc_conclusao)} color={projeto.atrasado ? "tomato" : "teal"} size='115px'>
+                            <CircularProgress value={arredondarPercentual(projeto.perc_conclusao)} color={projeto.atrasado ? "red" : "teal"} size='115px'>
                                 <CircularProgressLabel>{arredondarPercentual(projeto.perc_conclusao)}%</CircularProgressLabel>
                             </CircularProgress>
                         </CardHeader>
@@ -92,25 +98,24 @@ const ListarProjetos = forwardRef((props, ref) => {
                             <Heading size="md">{projeto.nome}</Heading>
                             <Text mt={2}>Início: {formatDate(projeto.data_inicio)}</Text>
                             <Text mt={2}>Fim: {formatDate(projeto.data_fim)}</Text>
-                            {projeto.atrasado ? <Text color="tomato" mt={2}>EM ATRASO</Text> : <Text color="teal" mt={2}>NO PRAZO</Text>}
+                            {projeto.atrasado ? <Text color="red" mt={2}>EM ATRASO</Text> : <Text color="teal" mt={2}>NO PRAZO</Text>}
                         </CardBody>
                     </Card>
                 ))}
             </SimpleGrid>
             {selectedProjeto && (
-                <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+                <Modal key={modalKey} isOpen={isOpen} onClose={onClose} isCentered size="xl">
                     <ModalOverlay />
                     <ModalContent>
                         <ModalHeader>{selectedProjeto.nome}</ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>
                             <Text mt={2}>{arredondarPercentual(selectedProjeto.perc_conclusao)}%</Text>
-                            <Progress colorScheme='teal' size='sm' value={arredondarPercentual(selectedProjeto.perc_conclusao)} />
+                            <Progress colorScheme={selectedProjeto.atrasado ? "red" : "teal"} size='sm' value={arredondarPercentual(selectedProjeto.perc_conclusao)} />
                             <Text mt={2}>Início: {formatDate(selectedProjeto.data_inicio)} - Fim: {formatDate(selectedProjeto.data_fim)}</Text>
-                            {selectedProjeto.atrasado ? <Text color="tomato" mt={2}>EM ATRASO</Text> : <Text color="teal" mt={2}>NO PRAZO</Text>}
-                            {<ListarAtividades idProjeto={selectedProjeto.id} ref={atividadesRef} />}
+                            {selectedProjeto.atrasado ? <Text color="red" mt={2}>EM ATRASO</Text> : <Text color="teal" mt={2}>NO PRAZO</Text>}
+                            <ListarAtividades idProjeto={selectedProjeto.id} ref={atividadesRef} />
                         </ModalBody>
-
                         <ModalFooter>
                             <Button
                                 leftIcon={<AddIcon />}
@@ -124,7 +129,6 @@ const ListarProjetos = forwardRef((props, ref) => {
                             >
                                 Nova atividade
                             </Button>
-
                             <Button
                                 leftIcon={<DeleteIcon />}
                                 variant='solid'

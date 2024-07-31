@@ -9,6 +9,7 @@ const useProjetos = (onClose) => {
     const [projetos, setProjetos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [idProjeto, setIdProjeto] = useState(null);
 
     const fetchProjetos = useCallback(async () => {
         try {
@@ -23,7 +24,9 @@ const useProjetos = (onClose) => {
 
     const fetchProjeto = useCallback(async (id_projeto) => {
         try {
+            setIdProjeto(id_projeto);
             const data = await fetchProjetoAPI(id_projeto);
+            return data;
         } catch (err) {
             setError('Erro ao carregar projetos');
         } finally {
