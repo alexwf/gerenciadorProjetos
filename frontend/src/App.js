@@ -1,15 +1,9 @@
 import React from 'react';
-import {
-    ChakraProvider,
-    Box,
-    Flex,
-    Heading,
-    Button,
-    useDisclosure
-} from '@chakra-ui/react';
+import { ChakraProvider, Box, Flex, Heading, Button, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import ListarProjetos from './components/ListarProjetos';
 import ModalNovoProjeto from './components/ModalNovoProjeto';
+import './App.css';
 
 function App() {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -25,29 +19,18 @@ function App() {
     return (
         <ChakraProvider>
             <Box>
-                <Flex
-                    as="header"
-                    direction="column"
-                    align="center"
-                    justify="center"
-                    bg="teal.500"
-                    color="white"
-                    p={10}
-                    textAlign="center"
-                    mb={4}
-                >
-                    <Heading>Gerenciador de Projetos Alex</Heading>
+                <Flex as="header" className="header">
+                    <Heading className="header-heading">Gerenciador de Projetos Alex</Heading>
                 </Flex>
-                <Box p={10}>
+                <Box className="page-container">
                     <ListarProjetos ref={projetosRef} />
                     <Button
+                        className="new-project-button"
                         leftIcon={<AddIcon />}
                         colorScheme='teal'
                         size='lg'
                         variant='solid'
                         position="fixed"
-                        bottom={4}
-                        right={4}
                         onClick={onOpen}
                     >
                         Novo projeto
@@ -58,6 +41,7 @@ function App() {
                         onSave={handleNovoProjetoSave}
                     />
                 </Box>
+                
             </Box>
         </ChakraProvider>
     );
