@@ -62,21 +62,22 @@ Este projeto é um gerenciador de projetos simples que permite aos usuários cri
 3. **Configure o banco de dados MySQL**
 
     Acesse o MySQL e execute o procedimento no db/banco.sql
+    As demais configurações de banco (host, user, password, client) podem ser ajustadas no arquivo: backend/src/config/knexfile.js   
 
-4. **Inicie o servidor backend**
+5. **Inicie o servidor backend**
 
     ```bash
     cd backend
     npm run start
     ```
 
-5. **Inicie o frontend**
+6. **Inicie o frontend**
     ```bash
     cd frontend
     npm run start
     ```
 
-6. **Acesse o aplicativo**
+7. **Acesse o aplicativo**
 
     Abra o navegador e vá para http://localhost:3000.
 
